@@ -37,9 +37,15 @@ for f in libdevice
   @eval cufunc(::typeof(Base.$f)) = CUDAnative.$f
 end
 
+#broadcast ^
+culiteral_pow(::typeof(^), x::Union{Float32, Float64}, ::Val{p}) where p = CUDAnative.pow(x, p)
+
+cufunc(::typeof(Base.literal_pow)) = culiteral_pow
+cufunc(::typeof(Base.:(^))) = CUDAnative.pow
+
 using MacroTools
 
-const _cufuncs = copy(libdevice)
+const _cufuncs = [copy(libdevice); :^]
 cufuncs() = (global _cufuncs; _cufuncs)
 
 function replace_device(ex)
