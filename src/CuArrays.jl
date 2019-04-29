@@ -24,6 +24,7 @@ if !configured
     const libcufft = nothing
     const libcurand = nothing
     const libcudnn = nothing
+    const libcutensor = nothing
 end
 
 include("memory.jl")
@@ -47,6 +48,7 @@ include("sparse/CUSPARSE.jl")
 include("solver/CUSOLVER.jl")
 include("fft/CUFFT.jl")
 include("rand/CURAND.jl")
+libcutensor !== nothing && include("tensor/CUTENSOR.jl")
 libcudnn !== nothing && include("dnn/CUDNN.jl")
 
 include("nnlib.jl")
@@ -72,6 +74,7 @@ function __init__()
     check_library("CUFFT", libcufft)
     check_library("CURAND", libcurand)
     check_library("CUDNN", libcudnn)
+    check_library("CUTENSOR", libcutensor)
 
     # package integrations
     @require ForwardDiff="f6369f11-7733-5829-9624-2563aa707210" include("forwarddiff.jl")
@@ -86,6 +89,7 @@ function __init__()
         CUSOLVER._dense_handle[] = C_NULL
         CUSOLVER._sparse_handle[] = C_NULL
         CUSPARSE._handle[] = C_NULL
+        CUTENSOR._handle[] = C_NULL
         CURAND._generator[] = nothing
         isdefined(CuArrays, :CUDNN) && (CUDNN._handle[] = C_NULL)
     end

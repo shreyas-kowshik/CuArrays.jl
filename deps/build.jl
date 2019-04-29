@@ -51,7 +51,7 @@ function main()
     end
 
     # optional libraries
-    for name in ("cudnn", )
+    for name in ("cudnn", "cutensor")
         lib = Symbol("lib$name")
         config[lib] = find_cuda_library(name, toolkit)
         if config[lib] == nothing
