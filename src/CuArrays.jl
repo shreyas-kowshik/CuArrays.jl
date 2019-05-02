@@ -89,9 +89,9 @@ function __init__()
         CUSOLVER._dense_handle[] = C_NULL
         CUSOLVER._sparse_handle[] = C_NULL
         CUSPARSE._handle[] = C_NULL
-        CUTENSOR._handle[] = C_NULL
         CURAND._generator[] = nothing
-        isdefined(CuArrays, :CUDNN) && (CUDNN._handle[] = C_NULL)
+        isdefined(CuArrays, :CUDNN)    && (CUDNN._handle[] = C_NULL)
+        isdefined(CuArrays, :CUTENSOR) && (CUTENSOR._handle[] = C_NULL)
     end
     push!(CUDAnative.device!_listeners, callback)
 
